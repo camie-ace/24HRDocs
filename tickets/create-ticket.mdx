@@ -1,0 +1,849 @@
+---
+title: "Add Ticket Modal"
+description: "Comprehensive multi-step form for creating roadside assistance tickets"
+---
+
+## Overview
+
+The `AddTicketModal` component provides a comprehensive multi-step form for creating roadside assistance tickets. It supports both insurance and fleet management organizations, with features for policy validation, service selection, service provider assignment, and more.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Key Features</CardTitle>
+    <CardDescription>What makes this component powerful</CardDescription>
+  </CardHeader>
+  <CardContent className="flex flex-col gap-2">
+    <p>✓ Multi-step form workflow (7 steps)</p>
+    <p>✓ Policy/Asset validation</p>
+    <p>✓ Dynamic service selection based on breakdown reason</p>
+    <p>✓ Geolocation and service provider suggestions</p>
+    <p>✓ Photo uploads with preview</p>
+    <p>✓ Scheduled time selection</p>
+    <p>✓ ETA calculation</p>
+    <p>✓ Organization selection for agents</p>
+    <p>✓ Transcript prefilling for voice-to-ticket workflows</p>
+  </CardContent>
+</Card>
+
+## Installation
+
+```bash
+npm install react-hook-form react-phone-number-input country-state-city axios
+```
+
+## Props Interface
+
+```typescript
+interface AddTicketProps {
+  showTrigger?: boolean;        // Show the "Add Ticket" button trigger
+  openState?: boolean;           // External control of dialog open state
+  setOpenState?: (open: boolean) => void;  // External state setter
+  ticketInfo?: any;             // Prefill data from transcript parsing
+}
+```
+
+## Usage Examples
+
+<Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Basic Usage</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        The simplest way to use the component is to include it with default props. This will show the "Add Ticket" button trigger.
+      </p>
+      ```typescript
+      import { AddTicketModal } from "@/components/add-ticket-modal";
+
+      function TicketsPage() {
+        return (
+          <div>
+            <AddTicketModal />
+          </div>
+        );
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Controlled Usage</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        For more control over when the modal opens, you can manage the state externally and hide the default trigger button.
+      </p>
+      ```typescript
+      function TicketsPage() {
+        const [isOpen, setIsOpen] = useState(false);
+
+        return (
+          <>
+            <Button onClick={() => setIsOpen(true)}>
+              Create Ticket
+            </Button>
+            <AddTicketModal 
+              showTrigger={false}
+              openState={isOpen}
+              setOpenState={setIsOpen}
+            />
+          </>
+        );
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="item-3">
+    <AccordionTrigger>With Prefilled Data (from Transcript)</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        When creating tickets from parsed call transcripts, you can prefill the form with extracted data. The component will automatically populate relevant fields.
+      </p>
+      ```typescript
+      function TicketsPage() {
+        const [ticketData, setTicketData] = useState(null);
+
+        const handleTranscriptParse = (transcript) => {
+          setTicketData({
+            extracted: {
+              phoneNumber: "+12345678900",
+              breakdownReason: "Flat tire",
+              issueDescription: "Front left tire is flat",
+              breakdownLocation: {
+                street: "123 Main St",
+                city: "San Francisco",
+                state: "CA",
+                zip: "94102"
+              },
+              towDestination: {
+                street: "456 Oak Ave",
+                city: "Oakland",
+                state: "CA",
+                zip: "94601"
+              },
+              scheduledTime: "2025-12-20T14:00:00Z"
+            },
+            transcript: {
+              text: "Customer reported a flat tire...",
+              callSid: "CAxxxx"
+            }
+          });
+        };
+
+        return (
+          <AddTicketModal 
+            ticketInfo={ticketData}
+            openState={!!ticketData}
+            setOpenState={(open) => !open && setTicketData(null)}
+          />
+        );
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+## Form Steps
+
+<Accordion type="single" collapsible className="w-full">
+  <AccordionItem value="step-1">
+    <AccordionTrigger>Step 1: Validate Policy/Asset</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Select the policy (insurance) or asset (fleet) for the ticket.
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Search input for policy number or insured name</li>
+          <li>Policy selection list with grouped results</li>
+          <li>Vehicle selection dropdown</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Validation:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Policy must be selected</li>
+          <li>Vehicle must be selected</li>
+          <li>Expired policies show warning but can be selected</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Features:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Groups policies by policy number</li>
+          <li>Shows vehicle count for grouped policies</li>
+          <li>Displays policy expiration status</li>
+        </ul>
+      </div>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="step-2">
+    <AccordionTrigger>Step 2: Breakdown Details</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Capture the breakdown reason and contact information.
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Cell number (international phone input)</li>
+          <li>Breakdown reason (radio buttons)</li>
+          <li>Issue description (textarea)</li>
+          <li>Related services (checkboxes) - auto-populated</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Breakdown Reasons:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Flat tire</li>
+          <li>Battery Replacement</li>
+          <li>Engine Support/Recovery</li>
+          <li>Jump Start</li>
+          <li>Lockout</li>
+          <li>Tire replacement</li>
+          <li>Fuel Delivery</li>
+          <li>Brake Fix</li>
+          <li>Towing</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Validation:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Cell number required</li>
+          <li>Breakdown reason required</li>
+          <li>For insurance organizations: at least one service must be selected</li>
+        </ul>
+      </div>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="step-3">
+    <AccordionTrigger>Step 3: Breakdown Location</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Capture where the vehicle broke down.
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Street address</li>
+          <li>State (searchable dropdown)</li>
+          <li>City (searchable dropdown, filtered by state)</li>
+          <li>Zip code</li>
+          <li>Vehicle class/type (Light/Medium/Heavy Duty)</li>
+          <li>Payment responsibility (Client or Driver)</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Validation:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Street, city, and state required</li>
+          <li>Automatic geolocation when address is complete</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Features:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Country-state-city integration for accurate location data</li>
+          <li>Automatic coordinate detection</li>
+          <li>Service provider suggestions based on location</li>
+          <li>Vehicle duty class affects service pricing</li>
+        </ul>
+      </div>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="step-4">
+    <AccordionTrigger>Step 4: Tow Destination</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Capture where the vehicle should be towed (optional).
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Street address</li>
+          <li>City (searchable dropdown)</li>
+          <li>State (searchable dropdown)</li>
+          <li>Zip code</li>
+          <li>Special instructions (textarea)</li>
+        </ul>
+      </div>
+
+      <p>
+        All fields are optional. Uses the same state/city dropdown logic as breakdown location for consistency.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="step-5">
+    <AccordionTrigger>Step 5: Additional Information</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Schedule, comments, and additional details.
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Scheduled date (min: tomorrow)</li>
+          <li>Scheduled time</li>
+          <li>Comments (multiple, navigable)</li>
+          <li>Claim number (optional, triggers confirmation)</li>
+          <li>Notes (for non-admin users)</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Features:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Date picker starts from tomorrow</li>
+          <li>Multiple comments with navigation UI</li>
+          <li>Comment counter and pagination</li>
+          <li>Claim number adds extra confirmation step</li>
+        </ul>
+      </div>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="step-6">
+    <AccordionTrigger>Step 6: Services (Optional)</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Define services and costs.
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Service name</li>
+          <li>Service cost</li>
+          <li>ETA (value and unit)</li>
+          <li>Photos (multiple uploads)</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Features:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Add/remove services dynamically</li>
+          <li>Total cost calculation</li>
+          <li>ETA in minutes, hours, or days</li>
+          <li>Friendly ETA display</li>
+          <li>Multiple photo uploads with preview</li>
+          <li>Base64 image encoding</li>
+        </ul>
+      </div>
+
+      <p className="mt-2">
+        Service prices are calculated based on state-specific pricing, vehicle duty class, and fallback to default pricing.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="step-7">
+    <AccordionTrigger>Step 7: Service Provider Selection (Optional)</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p>
+        <strong>Purpose:</strong> Assign a service provider.
+      </p>
+      
+      <div>
+        <strong>Fields:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Search input for service providers</li>
+          <li>Service provider list</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Features:</strong>
+        <ul className="list-disc pl-6 mt-2">
+          <li>Suggested providers based on geolocation</li>
+          <li>Search functionality</li>
+          <li>Distance display (if available)</li>
+          <li>Provider specialty/services display</li>
+          <li>Manual provider selection</li>
+        </ul>
+      </div>
+
+      <p className="mt-2">
+        This step is automatically skipped if no services or ETA data were entered in the previous step.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+## Data Structures
+
+<Accordion type="single" collapsible className="w-full">
+  <AccordionItem value="data-1">
+    <AccordionTrigger>Form Data Interface</AccordionTrigger>
+    <AccordionContent>
+      ```typescript
+      interface FormData {
+        breakdownReason: string;
+        issueDescription: string;
+        breakdownStreet: string;
+        breakdownCity: string;
+        breakdownStateCode: string;
+        breakdownStateName: string;
+        breakdownZipCode: string;
+        towStreet: string;
+        towCity: string;
+        towStateName: string;
+        towStateCode: string;
+        towZipCode: string;
+        subcontractor: string | null;
+        status: string;
+        comments: Array<{ text: string; user: string | null }>;
+        scheduledTimeDetails: Date | null;
+        claimNumber: string;
+        vehicleClass: string;
+        notes: string;
+        is_driver: boolean;
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="data-2">
+    <AccordionTrigger>Service Structure</AccordionTrigger>
+    <AccordionContent>
+      ```typescript
+      interface Service {
+        id: string;
+        name: string;
+        cost: number;
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="data-3">
+    <AccordionTrigger>ETA Structure</AccordionTrigger>
+    <AccordionContent>
+      ```typescript
+      interface ETATime {
+        value: number;
+        unit: "minutes" | "hours" | "days";
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="data-4">
+    <AccordionTrigger>Photo Structure</AccordionTrigger>
+    <AccordionContent>
+      ```typescript
+      interface Photo {
+        image: string;              // base64 encoded
+        imageContentType: string;   // MIME type
+        fileName: string;
+        file?: File;               // Original file for preview
+      }
+      ```
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="data-5">
+    <AccordionTrigger>Complete Ticket Submission Example</AccordionTrigger>
+    <AccordionContent>
+      ```typescript
+      const ticketData = {
+        policy_number: "POL123456",
+        insured_name: "John Doe",
+        vehicle_make: "Toyota",
+        vehicle_year: "2020",
+        vehicle_class: "light_duty",
+        current_cell_number: "5551234567",
+        breakdown_reason: [
+          { label: "Flat tire", key: "flat_tire", idx: 1 }
+        ],
+        breakdown_reason_text: "Front left tire punctured",
+        breakdown_address: {
+          street: "123 Main St",
+          city: "San Francisco",
+          state: "CA",
+          zipcode: "94102"
+        },
+        tow_destination: {
+          street: "456 Oak Ave",
+          city: "Oakland",
+          state: "CA",
+          zipcode: "94601"
+        },
+        status: "created",
+        client_id: "org_123",
+        services: [
+          { name: "Tire Change", cost: 75 },
+          { name: "Towing", cost: 150 }
+        ],
+        eta: new Date("2025-12-20T14:30:00Z"),
+        photos: [
+          {
+            image: "base64string...",
+            imageContentType: "image/jpeg"
+          }
+        ],
+        coord: { 
+          latitude: 37.7749, 
+          longitude: -122.4194 
+        },
+        scheduled_time: new Date("2025-12-20T10:00:00Z"),
+        comments: [
+          { text: "Customer waiting at location", user: "agent_123" }
+        ],
+        is_driver: false
+      };
+      ```
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+## API Endpoints
+
+<Card>
+  <CardHeader>
+    <CardTitle>Required API Integration</CardTitle>
+    <CardDescription>Endpoints used by the component</CardDescription>
+  </CardHeader>
+  <CardContent className="flex flex-col gap-4">
+    <div>
+      <strong>Fetch Services</strong>
+      ```http
+      POST /api/v1/tickets/services
+      Content-Type: application/json
+
+      {
+        "orgId": "string",
+        "breakdownReason": "string"
+      }
+      ```
+    </div>
+
+    <div>
+      <strong>Geolocate Address</strong>
+      <p className="text-sm mt-1">Via Redux action: `dispatch(geolocateTicket(breakdown_address))`</p>
+    </div>
+
+    <div>
+      <strong>Suggest Mechanics</strong>
+      <p className="text-sm mt-1">Via Redux action: `dispatch(suggestMechanics({ coord }))`</p>
+    </div>
+
+    <div>
+      <strong>Create Ticket</strong>
+      <p className="text-sm mt-1">Via Redux action: `dispatch(createTicket(ticketData))`</p>
+    </div>
+
+    <div>
+      <strong>Mark Record Created</strong>
+      ```http
+      POST /api/v1/dispatch-teams/records/:callSid/mark-created
+      ```
+      <p className="text-sm mt-1">Used when creating ticket from transcript</p>
+    </div>
+  </CardContent>
+</Card>
+
+## Redux Integration
+
+<Card>
+  <CardHeader>
+    <CardTitle>Required Redux Slices</CardTitle>
+    <CardDescription>Import these slices for full functionality</CardDescription>
+  </CardHeader>
+  <CardContent>
+    ```typescript
+    // Policy search
+    import { 
+      searchPolicies, 
+      selectSearchResults 
+    } from "@/redux/policySlice";
+
+    // Ticket operations
+    import { 
+      createTicket, 
+      geolocateTicket, 
+      selectGeolocateStatus 
+    } from "@/redux/ticketSlice";
+
+    // Service provider operations
+    import {
+      filterMechanics,
+      suggestMechanics,
+      selectMechanicSuggestions,
+      selectServiceProviderData
+    } from "@/redux/serviceproviderslice";
+
+    // Organization operations
+    import { 
+      fetchOrgsTrigger, 
+      selectOrgs 
+    } from "@/redux/organizationSlice";
+
+    // User operations
+    import { getUserOrg } from "@/redux/userslice";
+
+    // UI state
+    import { selectCombinedView } from "@/redux/uiSlice";
+    ```
+  </CardContent>
+</Card>
+
+## Role-Based Features
+
+<Accordion type="single" collapsible className="w-full">
+  <AccordionItem value="role-1">
+    <AccordionTrigger>Client Role</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <ul className="list-disc pl-6">
+        <li>Simplified notes field instead of comments system</li>
+        <li>Claim number field available</li>
+        <li>No organization selection required</li>
+        <li>Confirmation modal shown before submission</li>
+      </ul>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="role-2">
+    <AccordionTrigger>Agent Role (Combined View)</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <ul className="list-disc pl-6">
+        <li>Organization selection required before form opens</li>
+        <li>Access limited to assigned organizations only</li>
+        <li>Full comment system with user attribution</li>
+        <li>Can view organization-specific services</li>
+      </ul>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="role-3">
+    <AccordionTrigger>Admin/Super Admin Role</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <ul className="list-disc pl-6">
+        <li>Access to all organizations</li>
+        <li>Full feature set enabled</li>
+        <li>Comment system with user attribution</li>
+        <li>Can override organization restrictions</li>
+      </ul>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+## Utility Functions
+
+<Card>
+  <CardHeader>
+    <CardTitle>Helper Functions</CardTitle>
+    <CardDescription>Utility functions used throughout the component</CardDescription>
+  </CardHeader>
+  <CardContent className="flex flex-col gap-4">
+    <div>
+      <strong>formatDateTime</strong>
+      ```typescript
+      function formatDateTime(date: Date): string {
+        // Returns: "19th, December 2025 2PM"
+      }
+      ```
+    </div>
+
+    <div>
+      <strong>getTomorrowDate</strong>
+      ```typescript
+      function getTomorrowDate(): string {
+        // Returns: "2025-12-20" (ISO format)
+      }
+      ```
+    </div>
+
+    <div>
+      <strong>convertETAToFriendlyFormat</strong>
+      ```typescript
+      function convertETAToFriendlyFormat(etaTime: ETATime): string {
+        // Returns: "2 hours 30 minutes"
+      }
+      ```
+    </div>
+
+    <div>
+      <strong>calculateETADate</strong>
+      ```typescript
+      function calculateETADate(etaTime: ETATime): Date | null {
+        // Returns: Calculated future date
+      }
+      ```
+    </div>
+
+    <div>
+      <strong>filterEmptyValues</strong>
+      ```typescript
+      function filterEmptyValues(obj: any): any {
+        // Recursively removes null, undefined, and empty strings
+      }
+      ```
+    </div>
+
+    <div>
+      <strong>calculateServicePrice</strong>
+      ```typescript
+      function calculateServicePrice(service: any): number {
+        // Checks state-specific pricing first
+        // Falls back to default pricing
+        // Considers vehicle duty class
+        // Returns 0 if no pricing found
+      }
+      ```
+    </div>
+  </CardContent>
+</Card>
+
+## Validation Rules
+
+<Card>
+  <CardHeader>
+    <CardTitle>Form Validation</CardTitle>
+    <CardDescription>Required fields and validation logic per step</CardDescription>
+  </CardHeader>
+  <CardContent className="flex flex-col gap-3">
+    <div>
+      <strong>Step 1 (Policy/Asset):</strong>
+      <ul className="list-disc pl-6 mt-1">
+        <li>✓ Policy selected</li>
+        <li>✓ Vehicle selected</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Step 2 (Breakdown Details):</strong>
+      <ul className="list-disc pl-6 mt-1">
+        <li>✓ Breakdown reason selected</li>
+        <li>✓ Cell number provided</li>
+        <li>✓ At least one service selected (insurance orgs only)</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Step 3 (Breakdown Location):</strong>
+      <ul className="list-disc pl-6 mt-1">
+        <li>✓ Street address provided</li>
+        <li>✓ City selected</li>
+        <li>✓ State selected</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Steps 4-7:</strong>
+      <p className="mt-1">All optional, can skip to submission</p>
+    </div>
+  </CardContent>
+</Card>
+
+## Performance Optimizations
+
+<Card>
+  <CardHeader>
+    <CardTitle>Optimization Strategies</CardTitle>
+    <CardDescription>How the component maintains performance</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ul className="list-disc pl-6 space-y-2">
+      <li>Debounced search inputs (300ms) to prevent excessive API calls</li>
+      <li>Debounced geolocation (500ms) to reduce geocoding requests</li>
+      <li>Cached state/city lists to avoid repeated imports</li>
+      <li>Lazy loading of country-state-city data</li>
+      <li>Image preview optimization with URL.createObjectURL</li>
+      <li>Cleanup of object URLs on unmount to prevent memory leaks</li>
+      <li>Conditional rendering of optional steps</li>
+      <li>Memoized service price calculations</li>
+    </ul>
+  </CardContent>
+</Card>
+
+## Troubleshooting
+
+<Accordion type="single" collapsible className="w-full">
+  <AccordionItem value="trouble-1">
+    <AccordionTrigger>Services not loading</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p><strong>Possible causes:</strong></p>
+      <ul className="list-disc pl-6">
+        <li>Verify organization ID is properly set</li>
+        <li>Check breakdown reason is not "Other"</li>
+        <li>Ensure services API endpoint is accessible</li>
+        <li>Check browser console for API errors</li>
+      </ul>
+      <p className="mt-2">
+        The component gracefully handles missing services by hiding the services UI section.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="trouble-2">
+    <AccordionTrigger>Geolocation failing</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p><strong>Possible causes:</strong></p>
+      <ul className="list-disc pl-6">
+        <li>Verify complete address is entered (street, city, state)</li>
+        <li>Check API endpoint availability</li>
+        <li>Confirm coordinates are being returned from API</li>
+      </ul>
+      <p className="mt-2">
+        The component automatically falls back to manual provider list if geolocation fails.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="trouble-3">
+    <AccordionTrigger>State/City dropdowns empty</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p><strong>Possible causes:</strong></p>
+      <ul className="list-disc pl-6">
+        <li>Check internet connection (requires country-state-city CDN)</li>
+        <li>Verify country ISO code detection is working</li>
+        <li>Check browser console for import errors</li>
+        <li>Ensure country-state-city package is installed</li>
+      </ul>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="trouble-4">
+    <AccordionTrigger>Photos not uploading</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p><strong>Possible causes:</strong></p>
+      <ul className="list-disc pl-6">
+        <li>Verify file size is under 10MB</li>
+        <li>Check file type is image/* (JPG, PNG, GIF)</li>
+        <li>Ensure base64 encoding is working correctly</li>
+        <li>Check browser console for FileReader errors</li>
+      </ul>
+    </AccordionContent>
+  </AccordionItem>
+
+  <AccordionItem value="trouble-5">
+    <AccordionTrigger>Organization selection not showing</AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4 text-balance">
+      <p><strong>Requirements:</strong></p>
+      <ul className="list-disc pl-6">
+        <li>User role must be "agent"</li>
+        <li>Combined view must be enabled</li>
+        <li>Organizations must be loaded via fetchOrgsTrigger</li>
+      </ul>
+      <p className="mt-2">
+        Verify these conditions in Redux state and localStorage.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
