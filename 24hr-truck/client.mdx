@@ -1,0 +1,181 @@
+---
+title: "Clients and Dispatch Team"
+description: "How agents work with clients and use the Dispatch Team to handle calls and create tickets"
+---
+
+# Clients and Dispatch Team
+
+This page explains how agents interact with **clients** and how the **Dispatch Team** functions within the 24HR Truck system.
+
+Agents often work with multiple clients at the same time. Each client has its own setup, its own agents, and its own Dispatch Team. Understanding how to move between clients and how the Dispatch Team works is critical to handling calls and creating tickets correctly.
+
+---
+
+## The Clients Page
+
+The Clients page displays a list of all clients an agent has access to.
+
+An agent can be assigned to:
+- One client  
+- Multiple clients  
+
+Each client operates independently. Tickets, dispatch activity, and calls are always scoped to the **currently selected client**.
+
+---
+
+## Client Actions
+
+For each client on the Clients list, there is an **Actions** menu.
+
+From the Actions menu, agents can:
+- Switch into the client’s detailed view
+- Open the client’s **Dispatch Team**
+
+The Dispatch Team is where all live call handling and ticket preparation happens for that specific client.
+
+---
+
+## Access to the Dispatch Team
+
+Access to a Dispatch Team is **restricted**.
+
+Only users who were explicitly added during the creation of the Dispatch Team can access it. This typically includes:
+- Agents assigned to the client
+- A number of admins (optional)
+
+If you are not part of a client’s Dispatch Team, you will not see or receive calls for that client.
+
+---
+
+## What the Dispatch Team Is Used For
+
+The Dispatch Team is the live operational workspace for a client.
+
+It is used to:
+- Answer incoming calls
+- Record and review call notes
+- Prepare tickets during or after calls
+- Call drivers back if information is missing
+
+The Dispatch Team is tightly coupled to live calls and ticket creation.
+
+---
+
+## Dispatch Team Call Flow
+
+### Incoming Calls
+
+When a driver or client calls the client’s dispatch phone number, the call is routed directly to the Dispatch Team.
+
+The call will:
+- Ring for the Dispatch Team members
+- Remain unanswered for approximately **20–30 seconds** if no agent picks up
+- Automatically route to an AI agent if not picked up by a human
+
+---
+
+### Answering the Call
+
+As an agent, you can:
+- Pick up the call
+- Reject the call
+- Route the call immediately to the AI if needed
+
+If you pick up the call, you become the active agent handling the driver’s issue.
+
+---
+
+### During the Call
+
+Once the call is picked up:
+- The call is **recorded**
+- A system notetaker listens to the conversation
+- The notetaker captures key details such as:
+  - Policy number (if mentioned)
+  - Breakdown reason
+  - Breakdown location
+  - Tow destination
+  - Any other relevant information
+
+At the same time, the agent can manually take notes inside the Dispatch Team interface. These notes are used to confirm details, clarify information, and support ticket creation.
+
+---
+
+### Call Recording and Transcript Storage
+
+For record-keeping and auditing purposes, **every call is saved** after it ends.
+
+Both the **call recording** and the **call transcript** are automatically stored in the client's **AI Activity page**. This allows agents and admins to:
+- Review past conversations
+- Verify information collected during calls
+- Reference transcripts when investigating tickets or disputes
+- Maintain a complete communication history for the client
+
+Agents do not need to manually save recordings or transcripts — this is handled automatically by the system.
+
+---
+
+### Combining Notes
+
+When the call ends:
+- The system-generated notes
+- The agent’s manual notes (if provided)
+
+are **combined** and used as context for ticket creation.
+
+This ensures no important information is lost, even if it was mentioned briefly during the call.
+
+---
+
+## After the Call Ends
+
+Once the call ends, a **ticket modal** appears.
+
+From this modal, the agent has two options:
+- **Create a ticket**
+- **Call the driver back** if information is missing or unclear
+
+---
+
+### Creating a Ticket
+
+If the agent chooses to create a ticket:
+- The system pre-fills information using the combined notes
+- The agent reviews and completes the ticket
+- The agent proceeds through the full ticket creation flow
+- The ticket is created and handled according to the standard ticket lifecycle
+
+---
+
+### Calling the Driver Back
+
+If required information is missing:
+- The agent can call the driver back directly from the modal
+- Gather the missing details
+- Return to ticket creation once all information is confirmed
+
+Agents should never guess missing information.
+
+---
+
+## Relationship Between Clients, Dispatch, and Tickets
+
+To summarize:
+- **Clients** define who the work belongs to
+- **Dispatch Teams** handle live calls and ticket preparation
+- **Tickets** are created after calls and represent the actual breakdown cases
+
+Agents must always ensure:
+- They are operating under the correct client
+- They are using the correct Dispatch Team
+- Tickets are created with accurate, confirmed information
+
+---
+
+## Key Rules for Agents
+
+- Always confirm you are in the correct client context
+- Only Dispatch Team members and Admins can answer client calls
+- Calls not answered in time will route to AI
+- Notes taken during calls directly impact ticket accuracy
+- Call recordings and transcripts are always available in the Client AI Activity page

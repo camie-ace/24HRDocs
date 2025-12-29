@@ -15,7 +15,8 @@
       "children": [
         { "title": "Introduction to 24HR", "href": "/24hr-truck/introduction" },
         { "title": "Tickets", "href": "/24hr-truck/tickets" },
-        { "title": "Service Providers", "href": "/24hr-truck/sp" }
+        { "title": "Service Providers", "href": "/24hr-truck/sp" },
+        { "title": "Clients and Dispatch Teams", "href": "/24hr-truck/client" }
       ]
     }
   ]
