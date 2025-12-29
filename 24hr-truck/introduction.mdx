@@ -1,9 +1,9 @@
 ---
-title: "Agent Operations"
-description: "How agents use the 24HR Truck system to handle calls, tickets, dispatch, and clients"
+title: "24HR Truck"
+description: "Agent Operations Documentation"
 ---
 
-# Agent Operations
+## Introduction
 
 This documentation is written specifically for **agents** operating within the 24HR Truck system.
 
@@ -37,9 +37,9 @@ Tickets function as the system’s **operational source of truth**. Agents shoul
 
 Tickets vary based on timing and creation method, but the operational handling remains consistent.
 
-From a timing perspective, tickets may be immediate or scheduled. Immediate tickets require prompt attention, while scheduled tickets are planned for a later time. Operationally, however, both follow the same workflow. Timing affects urgency, not process.
+From a timing perspective, tickets may be **immediate** or **scheduled**. Immediate tickets require prompt attention, while scheduled tickets are planned for a later time. Operationally, however, both follow the same workflow. Timing affects urgency, not process.
 
-Tickets also differ based on how they are created. Some tickets are created by human agents, while others are created by AI agents. Agents must always be aware of the creation source, as it determines how much context already exists and what validation may still be required.
+Tickets also differ based on **how they are created**. Some tickets are created by human agents, while others are created by AI agents. Agents must always be aware of the creation source, as it determines how much context already exists and what validation may still be required.
 
 ---
 
@@ -49,7 +49,7 @@ When a driver calls into the platform, the call handling behavior depends on the
 
 For clients that support human dispatch teams, the call initially rings inside the agent portal. If no human agent answers the call within approximately 20 to 30 seconds, the system automatically routes the call to an AI agent.
 
-For certain clients that do not have a dispatch team, calls are routed directly to the AI agent by default, without first ringing for human agents. In these cases, the AI agent is the primary point of contact from the start.
+For certain clients that **do not have a dispatch team**, calls are routed **directly to the AI agent by default**, without first ringing for human agents. In these cases, the AI agent is the primary point of contact from the start.
 
 During the conversation, the AI agent gathers all required information from the driver and is capable of creating the ticket autonomously. The AI may also send alerts and initiate follow-up actions as part of the ticket creation process.
 
