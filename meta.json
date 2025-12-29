@@ -13,12 +13,9 @@
     {
       "title": "24HR Truck",
       "children": [
-        { "title": "Introduction to 24HR", "href": "/24hr-truck/introduction" }
+        { "title": "Introduction to 24HR", "href": "/24hr-truck/introduction" },
+        { "title": "Tickets", "href": "/24hr-truck/tickets" }
       ]
-    },
-    {
-      "title": "Examples",
-      "href": "/examples"
     }
   ]
 }

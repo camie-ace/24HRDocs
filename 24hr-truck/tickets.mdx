@@ -1,0 +1,78 @@
+---
+title: "Ticket Process"
+description: "A detailed guide on how to create, modify, and manage tickets in the 24HR Truck system"
+---
+
+# Ticket Process
+
+In this section, we dive deep into the entire lifecycle of a ticket within the 24HR Truck system. From creation to completion, agents will learn how to handle each step effectively.
+
+---
+
+## What is a Ticket?
+
+A ticket in the 24HR Truck system represents a single incident involving a broken-down vehicle that requires assistance. It is the central record of a specific roadside issue, including all details about the driver, vehicle, and required services.
+
+---
+
+## Ways to Create a Ticket
+
+Tickets can be created by human agents or AI agents. Regardless of the method, the process ensures that each ticket is valid and tied to the correct client.
+
+### Step One: Policy Validation
+
+For human agents, the first step is to validate whether the client has provided a policy and confirm the vehicle details. If a policy is provided, it must be validated before proceeding. If no policy is provided, the ticket proceeds as a self-pay case.
+
+For AI agents, if no policy is provided, the system defaults to self-pay. Once the policy is validated or the self-pay option is confirmed, this step is complete.
+
+### Step Two: Collecting Driver Information and Breakdown Details
+
+Next, agents collect the driver’s cell phone number, the reason for the breakdown, and an issue description. This information is gathered from the driver’s description and the conversation notes.
+
+### Step Three: Collecting Breakdown Location and Determining Coverage
+
+Agents then record the exact location where the vehicle is stranded and categorize the vehicle’s weight class. They also confirm who covers the payment (client, driver, or both).
+
+### Step Four: Setting the Tow Destination (If Applicable)
+
+If the vehicle needs to be towed, the agent records the tow destination, such as a repair shop or another location.
+
+### Step Five: Scheduling and Special Instructions
+
+Agents schedule the service based on the client’s preferred time and add any special instructions provided by the client.
+
+---
+
+## Modifying a Ticket
+
+After a ticket is created, agents may need to make modifications. This includes assigning a service provider, handling delays, and confirming the provider’s arrival.
+
+### Assigning a Service Provider
+
+The system contacts providers to gather ETAs and costs. The agent selects the best provider and assigns them to the ticket, updating the status to **“SP Assigned.”**
+
+### Handling Provider Delays
+
+If a provider is delayed, the agent reschedules the ETA and updates the status to **“SP Delayed.”**
+
+### Confirming Service Provider Arrival
+
+When the provider arrives, the status is updated to **“SP Arrived.”** The agent can confirm this with the driver if needed.
+
+### Service Provider Completed
+
+When the provider completes the service, the status is updated to **“SP Completed.”** The agent confirms with the driver that everything is done and any additional services are noted.
+
+---
+
+## Completing a Ticket
+
+### Payment and Invoice
+
+If the driver is responsible for payment, they receive a payment link via their phone number. If the client is covering payment, an invoice is sent to the client. Once all payments are confirmed, the ticket is updated to **“Completed.”**
+
+### Closing the Ticket
+
+With payment confirmed and the service complete, the ticket is closed, marking the end of the process.
+
+---
