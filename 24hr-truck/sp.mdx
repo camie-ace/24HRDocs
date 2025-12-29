@@ -1,0 +1,209 @@
+Perfect. Below is a **full, clean, agent-facing MDX page** for **Service Providers**, written as an **overview + operational understanding** for agents.
+
+* This is **not** a page for service providers themselves
+* This is **agents understanding how service providers work**
+* It includes **primary vs secondary**, creation, relationships, and agent actions
+* It uses **international-friendly language** (no country-specific assumptions)
+* Clear, narrative, easy to onboard with
+
+You can save this directly as:
+
+`service-providers.mdx`
+
+---
+
+```mdx
+---
+title: "Service Providers"
+description: "How service providers work within the 24HR Truck system and how agents interact with them"
+---
+
+# Service Providers
+
+This page is written for **agents** to understand what service providers are, how they relate to tickets, and how agents interact with them throughout the lifecycle of a ticket.
+
+Service providers are a core part of the 24HR Truck ecosystem. While agents manage tickets and coordination, service providers are the ones who physically deliver the service on the ground.
+
+This page explains the relationship between agents, service providers, clients, and tickets in a clear and practical way.
+
+---
+
+## What Is a Service Provider?
+
+A service provider is a business or individual that delivers roadside or vehicle-related services. This can include towing companies, mechanics, roadside repair specialists, or other vehicle assistance providers.
+
+Service providers do not create tickets themselves. They operate **within tickets** that have already been created by agents or AI agents. Their role begins once a ticket requires physical service to be delivered.
+
+A service provider may:
+- Be linked to one or multiple clients
+- Act as a primary provider, secondary provider, or both
+- Provide one or many types of services
+- Operate across different locations or regions
+
+---
+
+## How Service Providers Relate to Tickets
+
+Every service provider interaction happens **inside a ticket**.
+
+Once a ticket is created and contains all required information (policy or self-pay, breakdown reason, location, vehicle details, and timing), a service provider can be assigned.
+
+The service provider is responsible for:
+- Providing an estimated time of arrival (ETA)
+- Arriving at the breakdown location
+- Performing the required service
+- Notifying the system when service milestones are reached
+- Confirming when the service is completed
+
+Throughout this process, the ticket status changes to reflect the provider’s progress.
+
+---
+
+## How Agents and Service Providers Work Together
+
+Agents do not manually call service providers.  
+All provider communication (ETA requests, availability, and cost collection) is handled by the system.
+
+The agent’s role is **decision-making and coordination**, not outreach.
+
+Agents:
+- Review provider ETAs and costs collected by the system
+- Choose the most efficient provider based on time and cost
+- Assign the selected provider to the ticket
+- Monitor ticket status updates
+- Handle delays, confirmations, and follow-ups
+- Confirm completion and payment flow
+
+Service providers:
+- Respond to system requests
+- Travel to the provided location
+- Perform the service
+- Send status updates back through the system
+
+This separation ensures speed, consistency, and traceability.
+
+---
+
+## What Agents Can Do to a Service Provider Within a Ticket
+
+Within a ticket, agents can:
+- Assign a service provider
+- Change the assigned service provider if needed
+- Update ETAs when delays occur
+- Change ticket status based on provider progress
+- Confirm arrival and completion
+- Validate additional services performed
+- Finalize the ticket after payment is settled
+
+Agents **do not** negotiate costs manually or chase providers directly unless explicitly required by an exception workflow.
+
+---
+
+## Ticket Statuses Related to Service Providers
+
+As a service provider progresses through a ticket, agents must ensure the ticket status reflects reality.
+
+Common service-provider-related statuses include:
+
+- **SP Assigned** – A service provider has been selected and assigned  
+- **SP Delayed** – The provider has not arrived within the agreed ETA  
+- **SP Arrived** – The provider has arrived at the breakdown location  
+- **SP Completed** – The provider has completed the service  
+
+Accurate status updates are critical for client visibility, reporting, and payment flow.
+
+---
+
+## Primary Service Providers
+
+Primary service providers are service providers that are directly associated with a client.
+
+A service provider can become a **primary provider** in two ways:
+
+### 1. Created on the Client’s Service Provider Page
+Agents can manually create and link a service provider directly under a client’s account. Once created, that provider becomes a primary provider for that client.
+
+### 2. Assigned Through a Contract
+Some clients have contractual agreements that automatically designate certain service providers as primary providers. In this case, the provider is linked through the contract rather than manual creation.
+
+Primary service providers typically:
+- Have predefined or fixed pricing
+- Are preferred for that client’s tickets
+- Are considered first when assigning a provider
+
+A primary provider can still serve **multiple clients**.
+
+---
+
+## Secondary Service Providers
+
+Secondary service providers are general providers available within the system.
+
+They:
+- Are not tied exclusively to a specific client
+- Are used when no primary provider is available
+- May have variable pricing
+- Provide ETAs and costs dynamically
+
+Secondary providers act as a flexible network that ensures coverage even when primary providers are unavailable.
+
+A service provider can be:
+- Secondary for one client
+- Primary for another
+- Secondary for multiple clients simultaneously
+
+---
+
+## Creating a Service Provider as an Agent
+
+Agents are allowed to create service providers within the system.
+
+This is typically done when:
+- A client requests a specific provider
+- A driver recommends a provider
+- A new provider needs to be onboarded for a client
+
+When creating a service provider, the following information is required:
+
+- **Business Name** (required)
+- **Business Phone Number** (required)
+- **Business Email Address** (required)
+- **Services Provided** (optional)
+
+Services provided can be left blank if unknown or unnecessary. All other fields are required to ensure proper communication and traceability.
+
+---
+
+## International Address Considerations
+
+Service providers and breakdown locations may exist in any region.
+
+Addresses should be recorded in a **full international format**, including:
+- Street or road name
+- City or locality
+- State, province, or region (if applicable)
+- Postal or ZIP code (if available)
+- Country
+
+Agents should never assume a default country or address format. Accuracy here directly impacts dispatch success.
+
+---
+
+## Summary
+
+Service providers are execution partners within the 24HR Truck system.
+
+Agents:
+- Create and manage tickets
+- Assign and monitor service providers
+- Make operational decisions
+- Ensure accurate status updates and payment flow
+
+Service providers:
+- Deliver the physical service
+- Update progress through the system
+- Complete the job and confirm execution
+
+Understanding this relationship allows agents to move faster, reduce errors, and ensure smooth ticket resolution.
+
+---
