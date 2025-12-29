@@ -1,0 +1,132 @@
+:contentReference[oaicite:0]{index=0}
+
+# 24HR Truck  
+## Agent Operations Documentation
+
+---
+
+## Introduction
+
+This documentation is written specifically for **agents** operating within the 24HR Truck system.
+
+Agents are the primary daily users of the platform. They handle live calls, create and manage tickets, coordinate through the dispatch team, and operate across multiple client contexts. While admins and clients may access the system occasionally, agents are responsible for the real-time execution of operations.
+
+This documentation explains **how the system behaves in real operational scenarios**, not theoretical workflows.
+
+The platform is structured around three core areas that agents interact with daily:
+
+- Tickets  
+- Dispatch Team  
+- Clients Page  
+
+Each section reflects how agents naturally move through the system during live operations.
+
+---
+
+## Tickets
+
+### What a Ticket Represents
+
+In 24HR Truck, a ticket represents **a single broken-down vehicle that requires assistance**.
+
+A ticket corresponds to a real-world incident involving a driver, a vehicle, a location, and a specific problem. All operational actions — communication, coordination, dispatching, and resolution — revolve around tickets.
+
+Tickets function as the system’s **operational source of truth**. Agents should always treat tickets as the authoritative record of what is happening in the field.
+
+---
+
+### Ticket Variations and Context
+
+Tickets vary based on timing and creation method, but the operational handling remains consistent.
+
+From a timing perspective, tickets may be **immediate** or **scheduled**. Immediate tickets require prompt attention, while scheduled tickets are planned for a later time. Operationally, however, both follow the same workflow. Timing affects urgency, not process.
+
+Tickets also differ based on **how they are created**. Some tickets are created by human agents, while others are created by AI agents. Agents must always be aware of the creation source, as it determines how much context already exists and what validation may still be required.
+
+---
+
+### Tickets Created by AI Agents
+
+When a driver calls into the platform, the call handling behavior depends on the client configuration.
+
+For clients that support human dispatch teams, the call initially rings inside the agent portal. If no human agent answers the call within approximately 20 to 30 seconds, the system automatically routes the call to an AI agent.
+
+For certain clients that **do not have a dispatch team**, calls are routed **directly to the AI agent by default**, without first ringing for human agents. In these cases, the AI agent is the primary point of contact from the start.
+
+During the conversation, the AI agent gathers all required information from the driver and is capable of creating the ticket autonomously. The AI may also send alerts and initiate follow-up actions as part of the ticket creation process.
+
+Once created, an AI-generated ticket enters the system like any other ticket. These tickets are not considered secondary or incomplete by default. Agents are expected to review them, verify accuracy, and continue operations as needed.
+
+---
+
+### Tickets Created by Human Agents
+
+Human-created tickets are built around live interaction and contextual capture.
+
+When a driver calls and a human agent answers the call, the system immediately performs two actions. First, it opens the dispatch team interface, placing the agent into a live coordination context. Second, it begins recording and listening to the conversation in real time. This allows the system to capture details that will later assist with ticket creation.
+
+During the call, agents may take notes within the dispatch team interface. These notes provide additional context and help the system understand the situation. Agents are not expected to perfectly document every detail during the call, as conversation data is being captured automatically.
+
+Once the call ends, a call record is generated. This record contains the call recording, extracted conversation context, and any notes taken by the agent.
+
+From the call record, agents can choose to call the driver back or proceed to create a ticket. When creating a ticket, the system attempts to auto-populate ticket fields using the information gathered from the conversation. Agents review the auto-filled data, make corrections where necessary, and manually complete any missing information.
+
+If essential information is missing, agents are expected to call the driver back rather than guessing. A ticket should only be finalized once it is operationally usable.
+
+---
+
+### After a Ticket Is Created
+
+Once a ticket is created, it becomes an active operational case within the system. Agents are responsible for monitoring the ticket, updating it as new information becomes available, and coordinating next steps through the dispatch team when required.
+
+---
+
+## Dispatch Team
+
+### Purpose of the Dispatch Team
+
+The dispatch team is a shared coordination space where agents and admins collaborate around tickets and client-specific situations. It exists to support alignment, escalation, and decision-making during complex or sensitive cases.
+
+The dispatch team does not replace tickets. Tickets remain the primary operational record, while dispatch provides the context and coordination layer that supports execution.
+
+---
+
+### Dispatch During Live Calls
+
+When a human agent answers a driver call, the dispatch team interface opens automatically. This allows agents to take notes, observe captured context, and collaborate while the call is still in progress.
+
+This live dispatch context reduces cognitive load and ensures that important information is preserved for later ticket creation and follow-up.
+
+---
+
+### Dispatch for Ongoing Coordination
+
+Outside of live calls, the dispatch team is used to discuss ticket progress, align on next actions, escalate issues, and manage edge cases. Any decisions or conclusions reached through dispatch discussions should be reflected back into the relevant tickets to maintain a single source of truth.
+
+Agents should use the dispatch team deliberately and avoid duplicating ticket data unnecessarily.
+
+---
+
+## Clients Page
+
+### Understanding Client Context
+
+The clients page allows agents to organize work by client. A single client may have multiple tickets, historical patterns, and unique operational expectations.
+
+Client context provides agents with the broader picture beyond individual tickets.
+
+---
+
+### Switching Between Clients
+
+Agents may switch between clients during a shift. It is critical that agents always confirm they are operating under the correct client context before creating, updating, or managing tickets.
+
+Working under the wrong client can result in misrouting, incorrect reporting, and operational errors.
+
+---
+
+### Working Across Multiple Clients
+
+When handling multiple clients, agents must maintain strict separation of context. Tickets belong to specific clients, and actions taken under one client should never affect another.
+
+Proper client context management is essential for maintaining accuracy, consistency, and operational trust across the platform.
